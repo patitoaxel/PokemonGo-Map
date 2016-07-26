@@ -168,7 +168,6 @@ def parse_map(map_dict, iteration_num, step, step_location, alooma_sdk):
 
     if pokemons:
         log.info("Upserting {} pokemon".format(len(pokemons)))
-        alooma_sdk.report(pokemons)
         bulk_upsert(Pokemon, pokemons)
 
     if pokestops:
