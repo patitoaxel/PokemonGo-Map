@@ -128,6 +128,7 @@ def parse_map(map_dict, iteration_num, step, step_location, alooma_sdk):
                 'pokemon_name': get_pokemon_name(p['pokemon_data']['pokemon_id']),
                 'latitude': p['latitude'],
                 'longitude': p['longitude'],
+                'version': 0.2
             }
             alooma_sdk.report(alooma_report)
 
