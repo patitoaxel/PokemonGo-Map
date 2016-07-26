@@ -124,7 +124,7 @@ def parse_map(map_dict, iteration_num, step, step_location, alooma_sdk):
                 'disappear_time': d_t
             }
             alooma_report = {
-                'pokemon_id': pokemons[p['encounter_id']],
+                'pokemon_id': p['pokemon_data']['pokemon_id'],
                 'pokemon_name': get_pokemon_name(p['pokemon_data']['pokemon_id']),
                 'latitude': p['latitude'],
                 'longitude': p['longitude'],
