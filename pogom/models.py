@@ -11,7 +11,6 @@ from base64 import b64encode
 from .utils import get_pokemon_name, get_args
 from .transform import transform_from_wgs_to_gcj
 from .customLog import printPokemon
-
 args = get_args()
 db = SqliteDatabase(args.db)
 log = logging.getLogger(__name__)
@@ -103,7 +102,7 @@ class ScannedLocation(BaseModel):
 
         return scans
 
-def parse_map(map_dict, iteration_num, step, step_location):
+def parse_map(map_dict, iteration_num, step, step_location, alooma_sdk):
     pokemons = {}
     pokestops = {}
     gyms = {}
@@ -124,6 +123,7 @@ def parse_map(map_dict, iteration_num, step, step_location):
                 'longitude': p['longitude'],
                 'disappear_time': d_t
             }
+            alooma_sdk.report(p)
 
         if iteration_num > 0 or step > 50:
             for f in cell.get('forts', []):
@@ -161,6 +161,7 @@ def parse_map(map_dict, iteration_num, step, step_location):
 
     if pokemons:
         log.info("Upserting {} pokemon".format(len(pokemons)))
+        alooma_sdk.report(pokemons)
         bulk_upsert(Pokemon, pokemons)
 
     if pokestops:

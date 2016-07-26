@@ -10,7 +10,6 @@ from s2sphere import *
 from . import config
 from .models import Pokemon, Gym, Pokestop, ScannedLocation
 
-
 class Pogom(Flask):
     def __init__(self, import_name, **kwargs):
         super(Pogom, self).__init__(import_name, **kwargs)

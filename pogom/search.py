@@ -12,6 +12,10 @@ from pgoapi.utilities import f2i, get_cellid
 
 from . import config
 from .models import parse_map
+import alooma_pysdk
+import os 
+INPUT_TOKEN=os.environ['INPUT_TOKEN']
+alooma_sdk = alooma_pysdk.PythonSDK(INPUT_TOKEN)
 
 log = logging.getLogger(__name__)
 
@@ -100,7 +104,7 @@ def login(args, position):
 
 
 def search_thread(args):
-    i, total_steps, step_location, step, sem = args
+    i, total_steps, step_location, step, sem, alooma_sdk = args
 
     log.info('Scanning step {:d} of {:d} started.'.format(step, total_steps))
     log.debug('Scan location is {:f}, {:f}'.format(step_location[0], step_location[1]))
@@ -112,7 +116,7 @@ def search_thread(args):
         if response_dict:
             try:
                 sem.acquire()
-                parse_map(response_dict, i, step, step_location)
+                parse_map(response_dict, i, step, step_location, alooma_sdk)
             except KeyError:
                 log.error('Scan step {:d} failed. Response dictionary key error.'.format(step))
                 failed_consecutive += 1
@@ -166,7 +170,7 @@ def search(args, i):
             search(args, i)
             return
 
-        search_args = (i, total_steps, step_location, step, sem)
+        search_args = (i, total_steps, step_location, step, sem, alooma_sdk)
         search_threads.append(Thread(target=search_thread, name='search_step_thread {}'.format(step), args=(search_args, )))
 
         if step % max_threads == 0:
