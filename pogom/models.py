@@ -123,7 +123,13 @@ def parse_map(map_dict, iteration_num, step, step_location, alooma_sdk):
                 'longitude': p['longitude'],
                 'disappear_time': d_t
             }
-            alooma_sdk.report(p)
+            alooma_report = {
+                'pokemon_id': pokemons[p['encounter_id']],
+                'pokemon_name': get_pokemon_name(p['pokemon_data']['pokemon_id']),
+                'latitude': p['latitude'],
+                'longitude': p['longitude'],
+            }
+            alooma_sdk.report(alooma_report)
 
         if iteration_num > 0 or step > 50:
             for f in cell.get('forts', []):
